@@ -1,6 +1,6 @@
 {
     "saturday" : {
-        "0-1":false,
+        "0-1":true,
         "1-2":false,
         "2-3":false,
         "3-4":false,
