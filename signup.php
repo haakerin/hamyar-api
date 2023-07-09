@@ -3,7 +3,7 @@ require_once "./config.php";
 require_once "./functions.php";
 header('Content-Type: application/json');
 
-// var_dump(json_encode($_POST));exit;
+var_dump(json_encode($_POST));exit;
 // Retrieve POST data
 if (isset($_POST['username']) && isset($_POST['email']) && isset($_POST['password'])) {
     $username = input_sec($_POST['username']);
