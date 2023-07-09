@@ -1,6 +1,6 @@
 <?php
 // Database configuration
-$dbHost = "aberama.iran.liara.ir:31984";
+$dbHost = "hamyar-db:3306";
 $dbUsername = "root";
 $dbPassword = "Z8Ej2Ky0P8zH1MedAVSTSzj8";
 $dbName = "hamyar";
