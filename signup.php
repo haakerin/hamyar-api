@@ -30,7 +30,7 @@ while($allUsers = mysqli_fetch_assoc($result)){
         die(json_encode($respond));
     } else if($allUsers['username'] == $username){
         $respond=[
-            "status" => -2,
+            "status" => -3,
             "message" => "نام کاربری تکراریست"
         ];
         die(json_encode($respond));
