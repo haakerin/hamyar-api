@@ -3,15 +3,18 @@ require_once "functions.php";
 require_once "config.php";
 header('Content-Type: application/json');
 // Retrieve POST data
-if ((isset($_POST['username']) xor isset($_POST['email'])) && isset($_POST['password'])) {
-    if (isset($_POST['username'])) $username = input_sec($_POST['username']);
-    else if (isset($_POST['email'])) $username = input_sec($_POST['email']);
-    $password = input_sec($_POST['password']);
+if (file_get_contents("php://input")) {
+    $info = json_decode(file_get_contents("php://input"), true);
+    $username = isset($info['username'])? input_sec($info['username']) : (isset($info['email'])? input_sec($info['email']) : null);
+    $password = input_sec($info['password']);
+}
+if ((isset($info['username']) xor isset($info['email'])) && isset($info['password'])) {
+
     // Hash the password for security
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 }else {
     $respond = [
-        "status" => "error",
+        "status" => -1,
         "message" => "please send (email or phone) and password"
     ];
     die(json_encode($respond));
