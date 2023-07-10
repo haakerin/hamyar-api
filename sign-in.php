@@ -2,6 +2,8 @@
 require_once "functions.php";
 require_once "config.php";
 header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: POST, GET, DELETE, PUT, PATCH, OPTIONS');
+header('Access-Control-Allow-Headers: token, Content-Type');
 header('Content-Type: application/json');
 // Retrieve POST data
 if (file_get_contents("php://input")) {
