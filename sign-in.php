@@ -39,7 +39,7 @@ if (mysqli_stmt_num_rows($stmt) > 0 && password_verify($password, $fetched_passw
 } else {
     $respond = [
         "status" => -2,
-        "message" => "username or pasword is incorrect!"
+        "message" => "نام کاربری یا رمز عبور اشتباه است"
     ];
 
     echo json_encode($respond);

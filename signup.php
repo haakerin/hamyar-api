@@ -22,10 +22,16 @@ $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
 $result = mysqli_query($conn, "select * from users");
 while($allUsers = mysqli_fetch_assoc($result)){
-    if($allUsers['email'] == $email || $allUsers['username'] == $username){
+    if($allUsers['email'] == $email){
         $respond=[
             "status" => -2,
-            "message" => "یوزرنیم یا ایمیل تکراریست"
+            "message" => "ایمیل تکراریست"
+        ];
+        die(json_encode($respond));
+    } else if($allUsers['username'] == $username){
+        $respond=[
+            "status" => -2,
+            "message" => "نام کاربری تکراریست"
         ];
         die(json_encode($respond));
     }
