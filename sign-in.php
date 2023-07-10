@@ -17,20 +17,22 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && $info = json_decode(file_get_content
         ];
         die(json_encode($respond));
     }
-    $stmt = mysqli_prepare($conn, "SELECT * FROM users where username = ? or email = ?");
-    mysqli_stmt_bind_param($stmt, "ss", $username, $username);
-    mysqli_stmt_execute($stmt);
-    mysqli_stmt_store_result($stmt);
-    mysqli_stmt_bind_result($stmt, $fetched_id, $fetched_username, $fetched_email, $fetched_password);
-    mysqli_stmt_fetch($stmt);
-    if (mysqli_stmt_num_rows($stmt) > 0 && password_verify($password, $fetched_password)) {
-
+    // $stmt = mysqli_prepare($conn, "SELECT * FROM users where username = ? or email = ?");
+    // mysqli_stmt_bind_param($stmt, "ss", $username, $username);
+    // mysqli_stmt_execute($stmt);
+    // mysqli_stmt_store_result($stmt);
+    // mysqli_stmt_bind_result($stmt, $fetched_id, $fetched_username, $fetched_email, $fetched_password);
+    // mysqli_stmt_fetch($stmt);
+    $user = select_stmt($conn, "SELECT * FROM `users` where `username` = ? or `email` = ?", "ss", $username, $username)[0];
+    if ($user && password_verify($password, $user['password'])) {
         $respond = [
             "status" => 1,
             "message" => "user loged in",
             "user" => [
-                "username" => $fetched_username,
-                "email" => $fetched_email
+                // "username" => $fetched_username,
+                // "email" => $fetched_email
+                "username" => $user['username'],
+                "email" => $user['email']
             ]
         ];
         echo json_encode($respond);
