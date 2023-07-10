@@ -21,19 +21,13 @@ $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
 $result = mysqli_query($conn, "select * from users");
 while ($allUsers = mysqli_fetch_assoc($result)) {
-    if ($allUsers['email'] == $email) {
+    if ($allUsers['email'] == $email || $allUsers['username'] == $username) {
         $respond = [
             "status" => -2,
-            "message" => "ایمیل تکراریست"
+            "message" => "کاربری با این مشخصات وجود دارد"
         ];
         die(json_encode($respond));
-    } else if ($allUsers['username'] == $username) {
-        $respond = [
-            "status" => -3,
-            "message" => "نام کاربری تکراریست"
-        ];
-        die(json_encode($respond));
-    }
+    } 
 }
 
 if (insert_stmt($conn, "INSERT INTO users (username,email,password) VALUES (?,?,?)", "sss", $username, $email, $hashedPassword))
