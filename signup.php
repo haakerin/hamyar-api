@@ -5,10 +5,11 @@ header('Content-Type: application/json');
 
 // var_dump(json_encode($_POST));exit;
 // Retrieve POST data
-if (isset($_POST['username']) && isset($_POST['email']) && isset($_POST['password'])) {
-    $username = input_sec($_POST['username']);
-    $email = input_sec($_POST['email']);
-    $password = input_sec($_POST['password']);
+if (file_get_contents("php://input")) {
+    $info = json_decode(file_get_contents("php://input"), true);
+    $username = input_sec($info['username']);
+    $email = input_sec($info['email']);
+    $password = input_sec($info['password']);
 }
 // Hash the password for security
 $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
