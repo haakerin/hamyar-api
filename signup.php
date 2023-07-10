@@ -19,7 +19,7 @@ while($allUsers = mysqli_fetch_assoc($result)){
     if($allUsers['email'] == $email || $allUsers['username'] == $username){
         $respond=[
             "status" => -1,
-            "message" => "این کاربر از قبل وجود دارد"
+            "message" => "یوزرنیم یا ایمیل تکراریست"
         ];
         die(json_encode($respond));
     }
