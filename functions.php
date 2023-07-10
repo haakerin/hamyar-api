@@ -7,7 +7,7 @@ function input_sec($input)
   return $input;
 }
 
-function Level($grade, $times_json)
+function level($grade, $times_json)
 {
   if (!in_array($grade, [1, 2, 3])) {
     return "Invalid grade";
@@ -36,7 +36,7 @@ function Level($grade, $times_json)
   return $levels[$index][$grade - 1];
 }
 
-function Plan($times_json)
+function plan($times_json)
 {
   $times = json_decode($times_json, true);
   $plan = [];
@@ -63,7 +63,7 @@ function Plan($times_json)
   return json_encode($plan);
 }
 
-function Select_stmt($conn, $query, $types = "", ...$vars)
+function select_stmt($conn, $query, $types = "", ...$vars)
 {
   $stmt = mysqli_prepare($conn, $query);
   if ($stmt) {
@@ -100,7 +100,7 @@ function Select_stmt($conn, $query, $types = "", ...$vars)
   }
 }
 
-function Insert_stmt($conn, $query, $types = "", ...$vars)
+function insert_stmt($conn, $query, $types = "", ...$vars)
 {
   $stmt = mysqli_prepare($conn, $query);
   if ($stmt) {
@@ -122,7 +122,8 @@ function Insert_stmt($conn, $query, $types = "", ...$vars)
   }
 }
 
-function add_plan_validation($times_json) {
+function add_plan_validation($times_json)
+{
   $times = json_decode($times_json, true);
   $total_time = 0;
 
@@ -132,5 +133,5 @@ function add_plan_validation($times_json) {
     }));
   }
 
-  return $total_time < 24? -1 : ($total_time > 100? 1 : true);
+  return $total_time < 24 ? -1 : ($total_time > 100 ? 1 : true);
 }

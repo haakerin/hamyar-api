@@ -3,15 +3,14 @@ require_once "./config.php";
 require_once "./functions.php";
 header('Content-Type: application/json');
 
-// var_dump(json_encode($_POST));exit;
 // Retrieve POST data
-if (file_get_contents("php://input")) {
-    $info = json_decode(file_get_contents("php://input"), true);
-    if(!isset($info['username'], $info['email'], $info['password'])){
-        $respond=[
+if ($_SERVER['REQUEST_METHOD'] == "POST" && $info = json_decode(file_get_contents("php://input"), true)) {
+    if (!isset($info['username'], $info['email'], $info['password'])) {
+        $respond = [
             "status" => -1,
             "message" => "please send all parameters (username, email, password)"
         ];
+        die(json_encode($respond));
     }
     $username = input_sec($info['username']);
     $email = input_sec($info['email']);
@@ -21,39 +20,35 @@ if (file_get_contents("php://input")) {
 $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
 $result = mysqli_query($conn, "select * from users");
-while($allUsers = mysqli_fetch_assoc($result)){
-    if($allUsers['email'] == $email){
-        $respond=[
+while ($allUsers = mysqli_fetch_assoc($result)) {
+    if ($allUsers['email'] == $email) {
+        $respond = [
             "status" => -2,
             "message" => "ایمیل تکراریست"
         ];
         die(json_encode($respond));
-    } else if($allUsers['username'] == $username){
-        $respond=[
+    } else if ($allUsers['username'] == $username) {
+        $respond = [
             "status" => -3,
             "message" => "نام کاربری تکراریست"
         ];
         die(json_encode($respond));
     }
 }
-$stmt = mysqli_prepare($conn,"INSERT INTO users (username,email,password) VALUES (?,?,?)");
-mysqli_stmt_bind_param($stmt,'sss',$username,$email,$hashedPassword);
-mysqli_stmt_execute($stmt);
-if(mysqli_stmt_affected_rows($stmt) > 0) 
+
+if (insert_stmt($conn, "INSERT INTO users (username,email,password) VALUES (?,?,?)", "sss", $username, $email, $hashedPassword))
     $respond = [
         "status" => 1,
         "message" => "Sign-up successful."
     ];
 else
-$respond = [
-    "status" => 0,
-    "message" => "خطا در ثبت نام"
-];
+    $respond = [
+        "status" => 0,
+        "message" => "خطا در ثبت نام"
+    ];
 // Close the statement and database connection
 mysqli_stmt_close($stmt);
 mysqli_close($conn);
 
 // Return the JSON response
 echo json_encode($respond);
-
-?>
