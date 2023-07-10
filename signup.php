@@ -18,8 +18,8 @@ $result = mysqli_query($conn, "select * from users");
 while($allUsers = mysqli_fetch_assoc($result)){
     if($allUsers['email'] == $email || $allUsers['username'] == $username){
         $respond=[
-            "status" => "error",
-            "message" => "User with same username or email already exists."
+            "status" => -1,
+            "message" => "این کاربر از قبل وجود دارد"
         ];
         die(json_encode($respond));
     }
@@ -29,13 +29,13 @@ mysqli_stmt_bind_param($stmt,'sss',$username,$email,$hashedPassword);
 mysqli_stmt_execute($stmt);
 if(mysqli_stmt_affected_rows($stmt) > 0) 
     $respond = [
-        "status" => "sucssess",
+        "status" => 1,
         "message" => "Sign-up successful."
     ];
 else
 $respond = [
     "status" => 0,
-    "message" => "Failed to sign up."
+    "message" => "خطا در ثبت نام"
 ];
 // Close the statement and database connection
 mysqli_stmt_close($stmt);
