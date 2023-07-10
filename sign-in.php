@@ -28,7 +28,7 @@ mysqli_stmt_bind_result($stmt, $fetched_id, $fetched_username, $fetched_email, $
 mysqli_stmt_fetch($stmt);
 if (mysqli_stmt_num_rows($stmt) > 0 && password_verify($password, $fetched_password)) {
     $respond = [
-        "status" => "success",
+        "status" => 1,
         "message" => "user loged in",
         "user" => [
             "username" => $fetched_username,
@@ -38,7 +38,7 @@ if (mysqli_stmt_num_rows($stmt) > 0 && password_verify($password, $fetched_passw
     echo json_encode($respond);
 } else {
     $respond = [
-        "status" => "error",
+        "status" => -2,
         "message" => "username or pasword is incorrect!"
     ];
 
