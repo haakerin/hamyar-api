@@ -17,8 +17,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && $info = json_decode(file_get_content
         ];
         die(json_encode($respond));
     }
-
-    if ($result = select_stmt($conn, "SELECT * FROM users where username = ? or email = ?", "ss", $username, $username) && password_verify($password, $fetched_password)) {
+    $result = select_stmt($conn, "SELECT * FROM users where username = ? or email = ?", "ss", $username, $username);
+    if ($result && password_verify($password, $fetched_password)) {
         $user = $result[0];
         $respond = [
             "status" => 1,
