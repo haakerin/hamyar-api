@@ -7,6 +7,12 @@ header('Content-Type: application/json');
 // Retrieve POST data
 if (file_get_contents("php://input")) {
     $info = json_decode(file_get_contents("php://input"), true);
+    if(!isset($info['username'], $info['email'], $info['password'])){
+        $respond=[
+            "status" => -1,
+            "message" => "please send all parameters (username, email, password)"
+        ];
+    }
     $username = input_sec($info['username']);
     $email = input_sec($info['email']);
     $password = input_sec($info['password']);
@@ -18,7 +24,7 @@ $result = mysqli_query($conn, "select * from users");
 while($allUsers = mysqli_fetch_assoc($result)){
     if($allUsers['email'] == $email || $allUsers['username'] == $username){
         $respond=[
-            "status" => -1,
+            "status" => -2,
             "message" => "یوزرنیم یا ایمیل تکراریست"
         ];
         die(json_encode($respond));
