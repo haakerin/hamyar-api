@@ -1,6 +1,8 @@
 <?php
 header('Access-Control-Allow-Origin: *');
-
+header('Access-Control-Allow-Methods: POST, GET, DELETE, PUT, PATCH, OPTIONS');
+header('Access-Control-Allow-Headers: token, Content-Type');
+header('Content-Type: application/json');
 // Database configuration
 $dbHost = "aberama.iran.liara.ir:31984";
 $dbUsername = "root";
