@@ -1,4 +1,6 @@
 <?php
+header('Access-Control-Allow-Origin: *');
+
 // Database configuration
 $dbHost = "aberama.iran.liara.ir:31984";
 $dbUsername = "root";
