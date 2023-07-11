@@ -5,11 +5,7 @@ require_once "./functions.php";
 // Retrieve POST data
 if ($_SERVER['REQUEST_METHOD'] == "POST" && $info = json_decode(file_get_contents("php://input"), true)) {
     if (!isset($info['username'], $info['email'], $info['password'])) {
-        $respond = [
-            "status" => -1,
-            "message" => "please send all parameters (username, email, password)"
-        ];
-        die(json_encode($respond));
+        respond(-1, "please send all parameters (username, email, password)");
     }
     $username = input_sec($info['username']);
     $email = input_sec($info['email']);
@@ -21,15 +17,11 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && $info = json_decode(file_get_content
     $result = mysqli_query($conn, "select * from users");
     while ($allUsers = mysqli_fetch_assoc($result)) {
         if ($allUsers['email'] == $email || $allUsers['username'] == $username) {
-            $respond = [
-                "status" => -2,
-                "message" => "کاربری با این مشخصات وجود دارد"
-            ];
-            die(json_encode($respond));
+            respond(-2, "کاربری با این مشخصات وجود دارد");
         }
     }
 
-    if (insert_stmt($conn, "INSERT INTO users (username,email,password) VALUES (?,?,?)", "sss", $username, $email, $hashedPassword))
+    if (stmt($conn, "INSERT INTO users (username,email,password) VALUES (?,?,?)", "sss", $username, $email, $hashedPassword))
         $respond = [
             "status" => 1,
             "message" => "Sign-up successful."
@@ -41,7 +33,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && $info = json_decode(file_get_content
         ];
     // Close the statement and database connection
     mysqli_close($conn);
-
     // Return the JSON response
     echo json_encode($respond);
 }
