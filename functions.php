@@ -100,7 +100,7 @@ function select_stmt($conn, $query, $types = "", ...$vars)
   }
 }
 
-function insert_stmt($conn, $query, $types = "", ...$vars)
+function stmt($conn, $query, $types = "", ...$vars)
 {
   $stmt = mysqli_prepare($conn, $query);
   if ($stmt) {
