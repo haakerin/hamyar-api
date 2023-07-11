@@ -135,3 +135,54 @@ function add_plan_validation($times_json)
 
   return $total_time < 24 ? -1 : ($total_time > 100 ? 1 : true);
 }
+
+function selectUser($username)
+{
+  global $conn;
+  $user = select_stmt($conn, "SELECT * FROM `users` WHERE `username` = ?", "s", $username);
+  if ($user) {
+    return $user[0];
+  }
+  return false;
+}
+
+function selectUserPlans($userId)
+{
+  global $conn;
+  $plans = select_stmt($conn, "SELECT `id`,`name`,`subject_id`,`level` FROM `plans` WHERE `user_id` = ?", "i", $userId);
+  return formatPlans($plans);
+}
+
+function select_subplan($plan_id)
+{
+  global $conn;
+  if ($subplan = select_stmt($conn, "SELECT `name`,`subject_id`,`plan` FROM `plans` WHERE `id` = ?", "i", $plan_id)) {
+    $subplan = $subplan[0];
+    $subject = select_stmt($conn, "SELECT `name` FROM `subjects` WHERE id = ?", "i", $subplan['subject_id'])[0];
+    $subplan['subject'] = $subject['name'];
+    unset($subplan['subject_id']);
+    return $subplan;
+  }
+  return false;
+}
+
+function formatPlans($plans)
+{
+  global $conn;
+  foreach ($plans as $key => $value) {
+    $subject = select_stmt($conn, "SELECT `name` FROM `subjects` WHERE `id` = ?", "i", $value['subject_id'])[0];
+    unset($value['subject_id']);
+    $value['subject'] = $subject['name'];
+    $plans[$key] = $value;
+  }
+  return $plans;
+}
+
+function respond($statuscode, $message)
+{
+  $respond = [
+    "status" => $statuscode,
+    "message" => $message
+  ];
+  die(json_encode($respond));
+}
