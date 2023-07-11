@@ -4,7 +4,7 @@ require_once "./functions.php";
 
 header('Content-Type: application/json');
 if ($_SERVER['REQUEST_METHOD'] == "POST" && $info = json_decode(file_get_contents("php://input"), true)) {
-
+    $info['user_times'] = json_encode($info['user_times']);
     if (!isset($info['username'], $info['subject'], $info['plan_name'], $info['user_times'])) {
         $respond = [
             "status" => -1,
@@ -30,8 +30,26 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && $info = json_decode(file_get_content
         ];
         die(json_encode($respond));
     }
-    $user = select_stmt($conn, "SELECT id FROM users WHERE username = ?", "s", $username)[0];
-    $subject = select_stmt($conn, "SELECT id,grade FROM subjects WHERE name = ?", "s", $subject)[0];
+
+    $user = select_stmt($conn, "SELECT id FROM users WHERE username =?", "s", $username);
+    if (!$user) {
+        $respond = [
+            "status" => -3,
+            "message" => "username not exist"
+        ];
+        die(json_encode($respond));
+    }
+    $user = $user[0];
+
+    $subject = select_stmt($conn, "SELECT id,grade FROM subjects WHERE name = ?", "s", $subject);
+    if (!$subject) {
+        $respond = [
+            "status" => -3,
+            "message" => "subject not exist"
+        ];
+        die(json_encode($respond));
+    }
+    $subject = $subject[0];
 
     $level = level($subject['grade'], $user_times);
     $plan = plan($user_times);
