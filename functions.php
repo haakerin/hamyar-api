@@ -56,7 +56,7 @@ function plan($times_json)
       } elseif ($value === true && $practice >= 1) {
         $plan[$day][$key] = "practice";
         $practice--;
-      }
+      } else $plan[$day][$key] = "none";
     }
   }
 

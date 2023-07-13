@@ -18,10 +18,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && $info = json_decode(file_get_content
         $respond = [
             "status" => 1,
             "message" => "user loged in",
-            "user" => [
-                "username" => $user['username'],
-                "email" => $user['email']
-            ],
             "token" => generate_token($user_info)
         ];
         echo json_encode($respond);
