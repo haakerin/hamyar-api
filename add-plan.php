@@ -11,6 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && $info = json_decode(file_get_content
     $plan_name = input_sec($info['plan_name']);
     $user_times = str_replace("&quot;", "\"", input_sec($info['user_times']));
     $userInfo = json_decode(encrypt_decrypt('decrypt', $token, 'bozi'), true);
+    if (!select_stmt($conn, "SELECT * FROM `users` WHERE username = ?", "s", $userInfo['username'])) respond(-5, "token wrong");
     if (add_plan_validation($user_times) === 1)
         respond(-2, "زمان وارد شده از حد (100 ساعت) بیشتر است");
     else if (add_plan_validation($user_times) === -1)
