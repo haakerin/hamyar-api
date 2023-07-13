@@ -12,10 +12,11 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && $info = json_decode(file_get_content
             "sub_plan" => $subplan
         ];
         die(json_encode($respond));
-    } else if (!isset($info['username']))
+    } else if (!isset($info['token']))
         respond(-1, "please send all parameters (username)");
-    $username = $info['username'];
-    if (!$user = selectUser($username)) respond(-2, "user not found");
+    $token = $info['token'];
+    $userInfo = json_decode(encrypt_decrypt('decrypt', $token, 'bozi'), true);
+    if (!$user = selectUser($userInfo['username'])) respond(-2, "user not found");
 
     $plans = selectUserPlans($user['id']);
 
