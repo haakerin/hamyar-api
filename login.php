@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && $info = json_decode(file_get_content
         $username = isset($info['username']) ? input_sec($info['username']) : (isset($info['email']) ? input_sec($info['email']) : null);
         $password = input_sec($info['password']);
 
-        // Hash the password for securityy
+        // Hash the password for security
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
     } else
         respond(-1, "Please send both email and password.");
