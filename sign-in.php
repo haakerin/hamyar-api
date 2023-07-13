@@ -12,16 +12,17 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && $info = json_decode(file_get_content
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
     } else
         respond(-1, "Please send both email and password.");
-
     $user = select_stmt($conn, "SELECT * FROM `users` where `username` = ? or `email` = ?", "ss", $username, $username)[0];
     if ($user && password_verify($password, $user['password'])) {
+        $user_info = json_encode(["username" => $user['username'], "email" => $user['email'], "name" => $user['name']]);
         $respond = [
             "status" => 1,
             "message" => "user loged in",
             "user" => [
                 "username" => $user['username'],
                 "email" => $user['email']
-            ]
+            ],
+            "token" => generate_token($user_info)
         ];
         echo json_encode($respond);
     } else {
