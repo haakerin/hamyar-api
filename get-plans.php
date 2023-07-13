@@ -7,6 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && $info = json_decode(file_get_content
         if (!isset($info['id'], $info['token'])) respond(-1, "please send all parameters (id)");
         $token = $info['token'];
         $id = $info['id'];
+        $userInfo = json_decode(encrypt_decrypt('decrypt', $token, 'bozi'), true);
         if (!select_stmt($conn, "SELECT * FROM `users` WHERE username = ?", "s", $userInfo['username'])) respond(-5, "token wrong");
         if (!$subplan = select_subplan($id)) respond(-2, "not exist");
         $respond = [
@@ -17,7 +18,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && $info = json_decode(file_get_content
     } else if (!isset($info['token']))
         respond(-1, "please send all parameters (username)");
     $token = $info['token'];
-    $userInfo = json_decode(encrypt_decrypt('decrypt', $token, 'bozi'), true);
     if (!select_stmt($conn, "SELECT * FROM `users` WHERE username = ?", "s", $userInfo['username'])) respond(-5, "token wrong");
     if (!$user = selectUser($userInfo['username'])) respond(-2, "user not found");
 
