@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && $info = json_decode(file_get_content
         respond(-1, "Please send both email and password.");
     $user = select_stmt($conn, "SELECT * FROM `users` where `username` = ? or `email` = ?", "ss", $username, $username)[0];
     if ($user && password_verify($password, $user['password'])) {
-        $user_info = json_encode(["username" => $user['username'], "email" => $user['email'], "name" => $user['name']]);
+        $user_info = json_encode(["id" => $user['id'], "username" => $user['username'], "email" => $user['email'], "name" => $user['name']]);
         $respond = [
             "status" => 1,
             "message" => "user loged in",

@@ -198,6 +198,14 @@ function signup_validation($username, $email, $password)
   } else return false;
 }
 
+function update_user_validation($username, $email)
+{
+  if (!empty($username) && !empty($email)) {
+    if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+      return true;
+    } else return false;
+  } else return false;
+}
 function login_validation($username, $email, $password)
 {
   if ((!empty($username) xor !empty($email)) && !empty($password)) return true;
