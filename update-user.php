@@ -5,7 +5,7 @@ require_once "./functions.php";
 // Retrieve POST data
 if ($_SERVER['REQUEST_METHOD'] == "POST" && $info = json_decode(file_get_contents("php://input"), true)) {
     if (!isset($info['username'], $info['email'], $info['token'], $info['name']))
-        respond(-1, "please send all parameters (username, email, password, name)");
+        respond(-1, "please send all parameters (token, username, email, name)");
     $token = $info['token'];
     $name = $info['name'];
     $username = $info['username'];
