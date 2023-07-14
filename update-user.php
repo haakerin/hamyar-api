@@ -11,6 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && $info = json_decode(file_get_content
     $username = $info['username'];
     $email = $info['email'];
     $userInfo = json_decode(encrypt_decrypt('decrypt', $token, 'bozi'), true);
+    $user_info = json_encode(["id"=>$userInfo['id'],"name"=>$name,"username"=>$username,"email"=>$email]);
     if (!select_stmt($conn, "SELECT * FROM `users` WHERE username = ?", "s", $userInfo['username'])) respond(-2, "token wrong");
     if (!update_user_validation($username, $email)) respond(-3, "validation error");
     if (select_stmt($conn, "SELECT * FROM `users` WHERE `username` = ?", "s", $username))
@@ -18,11 +19,14 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && $info = json_decode(file_get_content
     if (stmt($conn, "UPDATE `users` SET `username` = ?, `name` = ?, `email` = ? WHERE id = ?", "sssi", $username, $name, $email, $userInfo['id']))
         $respond = [
             "status" => 1,
-            "message" => "successful"
+            "message" => "successful",
+            "token" => generate_token($user_info)
         ];
     else
         $respond = [
             "status" => 0,
             "message" => "خطا در ویرایش"
         ];
+    echo json_encode($respond);
+    mysqli_close($conn);
 }
