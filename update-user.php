@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && $info = json_decode(file_get_content
     $user_info = json_encode(["id"=>$userInfo['id'],"name"=>$name,"username"=>$username,"email"=>$email]);
     if (!select_stmt($conn, "SELECT * FROM `users` WHERE username = ?", "s", $userInfo['username'])) respond(-5, "token wrong");
     if (!update_user_validation($username, $email)) respond(-3, "validation error");
-    if (select_stmt($conn, "SELECT * FROM `users` WHERE `username` = ?", "s", $username))
+    if ($username != $userInfo['username'] && select_stmt($conn, "SELECT * FROM `users` WHERE `username` = ?", "s", $username))
         respond(-2, "کاربری با این مشخصات وجود دارد");
     if (stmt($conn, "UPDATE `users` SET `username` = ?, `name` = ?, `email` = ? WHERE id = ?", "sssi", $username, $name, $email, $userInfo['id']))
         $respond = [
