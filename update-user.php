@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && $info = json_decode(file_get_content
     $email = $info['email'];
     $userInfo = json_decode(encrypt_decrypt('decrypt', $token, 'bozi'), true);
     $user_info = json_encode(["id"=>$userInfo['id'],"name"=>$name,"username"=>$username,"email"=>$email]);
-    if (!select_stmt($conn, "SELECT * FROM `users` WHERE username = ?", "s", $userInfo['username'])) respond(-2, "token wrong");
+    if (!select_stmt($conn, "SELECT * FROM `users` WHERE username = ?", "s", $userInfo['username'])) respond(-5, "token wrong");
     if (!update_user_validation($username, $email)) respond(-3, "validation error");
     if (select_stmt($conn, "SELECT * FROM `users` WHERE `username` = ?", "s", $username))
         respond(-2, "کاربری با این مشخصات وجود دارد");

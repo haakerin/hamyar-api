@@ -5,7 +5,7 @@ header('Access-Control-Allow-Headers: token, Content-Type');
 header('Content-Type: application/json');
 // error_reporting(0);
 // Database configuration
-$isonserver = true;
+$isonserver = false;
 if ($isonserver) {
     $dbHost = "hamyar-db:3306";
     $dbUsername = "root";
