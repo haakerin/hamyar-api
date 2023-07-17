@@ -9,7 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && $info = json_decode(file_get_content
     if (!select_stmt($conn, "SELECT * FROM `users` WHERE username = ?", "s", $userInfo['username'])) respond(-5, "token wrong");
     $respond = [
         "status" => 1,
-        "user_info" => ["name" => $userInfo['name'],"username" => $userInfo['username'],"email" => $userInfo['email']]
+        "user_info" => ["id" => $userInfo['id'],"name" => $userInfo['name'],"username" => $userInfo['username'],"email" => $userInfo['email']]
     ];
     
     mysqli_close($conn);
